@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name" translatable="false">KentonsKoffee</string>
+    <string name="welcome_message" translatable="true">Welcome to  Kenton\'s Koffee</string>
+</resources>
