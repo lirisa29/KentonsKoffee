@@ -6,6 +6,7 @@ plugins {
 android {
     namespace = "com.iie.st10349354.kentonskoffee"
     compileSdk = 36
+    viewBinding.enable = true;
 
     defaultConfig {
         applicationId = "com.iie.st10349354.kentonskoffee"

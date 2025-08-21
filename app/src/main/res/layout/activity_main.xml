@@ -10,13 +10,13 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/img_logo"
         android:layout_width="wrap_content"
         android:layout_height="250dp"
         app:srcCompat="@drawable/logo" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_welcome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
@@ -38,21 +38,21 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/img_sb1"
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/sb1" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/img_sb2"
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/sb5" />
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/img_sb3"
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_gravity="center"

@@ -1,41 +1,40 @@
 package com.iie.st10349354.kentonskoffee
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.iie.st10349354.kentonskoffee.databinding.ActivityMainBinding
+import com.iie.st10349354.kentonskoffee.databinding.ActivityOrderDetailsBinding
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class OrderDetailsActivity : AppCompatActivity() {
     var order = Order()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_order_details)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        val binding = ActivityOrderDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.imgSb1.setOnClickListener(this)
-        binding.imgSb2.setOnClickListener(this)
-        binding.imgSb3.setOnClickListener(this)
-    }
+        order.productName = intent.getStringExtra("order").toString()
 
-    override fun onClick(v: View?){
-        when(v?.id){
-            R.id.img_sb1 -> order.productName = "Soy Latte"
-            R.id.img_sb2 -> order.productName = "Chocco Frappe"
-            R.id.img_sb3 -> order.productName = "Caramel Frappe"
+        binding.tvPlacedOrder.text = order.productName
+
+        when(order.productName) {
+            "Soy Latte" -> binding.imgOrderedBeverage.setImageResource(R.drawable.sb1)
+            "Chocco Frappe" -> binding.imgOrderedBeverage.setImageResource(R.drawable.sb2)
+            "Caramel Frappe" -> binding.imgOrderedBeverage.setImageResource(R.drawable.sb3)
         }
-        Toast.makeText(this@MainActivity, "MMM " + order.productName, Toast.LENGTH_SHORT).show()
-        openIntent(applicationContext, order.productName, OrderDetailsActivity::class.java)
+
+        binding.fabOrder.setOnClickListener(){
+            shareIntent(applicationContext, order.productName)
+        }
     }
 }
