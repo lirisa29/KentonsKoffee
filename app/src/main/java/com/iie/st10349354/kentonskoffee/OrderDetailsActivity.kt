@@ -5,7 +5,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.iie.st10349354.kentonskoffee.databinding.ActivityMainBinding
 import com.iie.st10349354.kentonskoffee.databinding.ActivityOrderDetailsBinding
 
 class OrderDetailsActivity : AppCompatActivity() {
