@@ -96,6 +96,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, NavigationView.O
         CoroutineScope(Dispatchers.IO).launch {
             val product = orderDAO.getAllOrders().firstOrNull { it.productName == productName}
             product?.let {
+                // Save to SharedPreferences as JSON
+                JsonUtils.saveOrderToPreferences(this@MainActivity, it)
+
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@MainActivity,
                         "MMM ${it.productName}", Toast.LENGTH_SHORT).show()

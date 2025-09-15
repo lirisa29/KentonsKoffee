@@ -22,8 +22,11 @@ class OrderDetailsActivity : AppCompatActivity() {
         val binding = ActivityOrderDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        order.productName = intent.getStringExtra("order").toString()
+        // Retrieve the order from SharedPreferences
+        val orderFromPrefs = JsonUtils.getOrderFromPreferences(this)
+        //orderFromPrefs?.let { order = it }
 
+        // Set the product name on the text view
         binding.tvPlacedOrder.text = order.productName
 
         when(order.productName) {
