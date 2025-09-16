@@ -11,7 +11,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.common.util.JsonUtils
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.database.FirebaseDatabase
 import com.iie.st10349354.kentonskoffee.databinding.ActivityMainWithNavDrawerBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, NavigationView.O
     private lateinit var toggleOnOff: ActionBarDrawerToggle
     private lateinit var orderDAO : OrderDAO // Declare DAO
     private lateinit var db: AppDatabase // Declare Database
+    private lateinit var database: FirebaseDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, NavigationView.O
 
         binding = ActivityMainWithNavDrawerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        database = FirebaseDatabase.getInstance()
 
         // Initialise Database and DAO
         db = AppDatabase.getDatabase(this) as AppDatabase
@@ -78,7 +83,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, NavigationView.O
         )
 
         CoroutineScope(Dispatchers.IO).launch {
-            products.forEach { orderDAO.insert(it)}
+            products.forEach {
+                orderDAO.insert(it)
+                // Save the order to Firebase after inserting into Room
+                saveOrderToFirebase(it)
+            }
         }
     }
 
@@ -97,7 +106,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, NavigationView.O
             val product = orderDAO.getAllOrders().firstOrNull { it.productName == productName}
             product?.let {
                 // Save to SharedPreferences as JSON
-                JsonUtils.saveOrderToPreferences(this@MainActivity, it)
+                JsonUtlis.saveOrderPreferences(this@MainActivity, it)
 
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@MainActivity,
@@ -130,5 +139,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, NavigationView.O
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun saveOrderToFirebase(order: OrderEntity){
+        // Get a reference to the 'orders' node in the database
+        val ordersRef = database.getReference("orders")
+
+        // Generate a unique key for the new order
+        val orderId = ordersRef.push().key
+
+        // Set the order data using the unique key
+        orderId?.let {
+            ordersRef.child(it).setValue(order)
+                .addOnSuccessListener {
+                    // Successfully saved
+                    Toast.makeText(this, "Order saved to Firebase!", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    // Failed to save
+                    Toast.makeText(this, "Failed to save order: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 }

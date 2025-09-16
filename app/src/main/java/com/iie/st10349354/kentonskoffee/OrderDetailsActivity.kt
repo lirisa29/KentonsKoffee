@@ -5,6 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.common.util.JsonUtils
 import com.iie.st10349354.kentonskoffee.databinding.ActivityOrderDetailsBinding
 
 class OrderDetailsActivity : AppCompatActivity() {
@@ -23,8 +24,8 @@ class OrderDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Retrieve the order from SharedPreferences
-        val orderFromPrefs = JsonUtils.getOrderFromPreferences(this)
-        //orderFromPrefs?.let { order = it }
+        val orderFromPrefs = JsonUtlis.getOrderFromPreferences(this)
+        orderFromPrefs?.let { order = it }
 
         // Set the product name on the text view
         binding.tvPlacedOrder.text = order.productName
